@@ -1,0 +1,61 @@
+{
+  "expo": {
+    "name": "MemeGen AI",
+    "slug": "memegen-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0A0A0F"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "L'accès au microphone est nécessaire pour enregistrer des notes vocales et générer des mèmes à partir de votre voix.",
+        "NSPhotoLibraryUsageDescription": "L'accès à votre galerie est nécessaire pour choisir une image et créer un mème.",
+        "NSCameraUsageDescription": "L'accès à la caméra est nécessaire pour prendre une photo et créer un mème."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0A0A0F",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "L'accès au microphone est nécessaire pour enregistrer des notes vocales."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "L'accès à votre galerie photos est requis pour créer des mèmes.",
+          "cameraPermission": "L'accès à votre caméra est requis pour prendre des photos."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Permettre à MemeGen AI d'accéder à vos photos.",
+          "savePhotosPermission": "Permettre à MemeGen AI de sauvegarder des photos."
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+# Fichiers temporaires et logs de développement
+frontend/npm-install-log.txt
+frontend/utf8-log.txt
+frontend/CLAUDE.md
+frontend/AGENTS.md
+frontend/.claude/
+implementation_plan.md
+
+# Fichiers OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
