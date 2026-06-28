@@ -7,17 +7,19 @@
     "dev": "nodemon server.js",
     "test": "echo \"No tests configured\" && exit 0"
   },
-  "description": "Backend API pour le Générateur de Mèmes Multimodal — ICT202 G2",
-  "author": "ICT202 G2",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "description": "",
+  "author": "",
+  "keywords": [],
+  "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@gradio/client": "^2.3.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "multer": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }

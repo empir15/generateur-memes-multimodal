@@ -27,9 +27,10 @@ const CULTURAL_OPTIONS = [
 
 interface StatusRemixerScreenProps {
   onBack: () => void;
+  onFaceSwap?: (imageUri: string) => void;
 }
 
-export default function StatusRemixerScreen({ onBack }: StatusRemixerScreenProps) {
+export default function StatusRemixerScreen({ onBack, onFaceSwap }: StatusRemixerScreenProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [memeData, setMemeData] = useState<MemeImageData | null>(null);
@@ -127,6 +128,7 @@ export default function StatusRemixerScreen({ onBack }: StatusRemixerScreenProps
             imageUri={selectedImage}
             emoji={memeData.emoji}
             onReset={handleReset}
+            onFaceSwap={onFaceSwap}
           />
         ) : (
           <View style={styles.content}>

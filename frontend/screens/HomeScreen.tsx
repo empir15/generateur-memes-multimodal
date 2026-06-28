@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/Colors';
 
 interface HomeScreenProps {
-  onNavigate: (screen: 'home' | 'text' | 'voice' | 'image' | 'generate') => void;
+  onNavigate: (screen: 'home' | 'text' | 'voice' | 'image' | 'generate' | 'faceswap') => void;
 }
 
 export default function HomeScreen({ onNavigate }: HomeScreenProps) {
@@ -132,6 +132,33 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
                   <Text style={styles.cardTitle}>AI Generator 🎨</Text>
                   <Text style={styles.cardDescription}>
                     Décrivez votre idée et l'IA génère l'image du mème à partir de zéro.
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={24} color="#FFF" style={styles.arrow} />
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* 5. Face Swapper */}
+          <TouchableOpacity
+            style={styles.card}
+            activeOpacity={0.85}
+            onPress={() => onNavigate('faceswap')}
+          >
+            <LinearGradient
+              colors={Colors.gradients.faceswap as any}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.cardGradient}
+            >
+              <View style={styles.cardContent}>
+                <View style={styles.iconContainer}>
+                  <Ionicons name="people-outline" size={32} color="#FFF" />
+                </View>
+                <View style={styles.cardTextContainer}>
+                  <Text style={styles.cardTitle}>Face Swapper 🎭</Text>
+                  <Text style={styles.cardDescription}>
+                    Échangez le visage d'un mème généré ou d'une photo par le visage de votre choix.
                   </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={24} color="#FFF" style={styles.arrow} />

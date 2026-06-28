@@ -47,6 +47,7 @@ export const Colors = {
     image:    ['#FF9F43', '#EE5A24'] as const,
     text:     ['#00D2D3', '#7C5CFC'] as const,
     generate: ['#FF4EAA', '#C644FC'] as const, // Rose → Violet pour AI Generator
+    faceswap: ['#10B981', '#3B82F6'] as const, // Vert → Bleu pour Face Swapper
   },
 };
 

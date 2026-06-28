@@ -52,9 +52,10 @@ const EXAMPLE_SUBJECTS = [
 
 interface AiGeneratorScreenProps {
   onBack: () => void;
+  onFaceSwap?: (imageUri: string) => void;
 }
 
-export default function AiGeneratorScreen({ onBack }: AiGeneratorScreenProps) {
+export default function AiGeneratorScreen({ onBack, onFaceSwap }: AiGeneratorScreenProps) {
   const [subject, setSubject]               = useState('');
   const [loading, setLoading]               = useState(false);
   const [loadingStep, setLoadingStep]       = useState(0);
@@ -130,6 +131,7 @@ export default function AiGeneratorScreen({ onBack }: AiGeneratorScreenProps) {
               imageUri={memeData.imageBase64}
               emoji={memeData.emoji}
               onReset={handleReset}
+              onFaceSwap={onFaceSwap}
             />
           ) : (
             <View style={styles.content}>

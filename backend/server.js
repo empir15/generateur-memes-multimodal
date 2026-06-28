@@ -18,6 +18,7 @@ const analyzeTextRoute = require('./routes/analyzeText');
 const voiceToMemeRoute = require('./routes/voiceToMeme');
 const remixImageRoute = require('./routes/remixImage');
 const generateMemeRoute = require('./routes/generateMeme');
+const faceSwapRoute = require('./routes/faceSwap');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,6 +57,7 @@ app.get('/', (req, res) => {
       voiceToMeme: 'POST /api/voice-to-meme',
       remixImage:  'POST /api/remix-image',
       generateMeme: 'POST /api/generate-meme',
+      faceSwap: 'POST /api/face-swap',
     },
   });
 });
@@ -65,6 +67,7 @@ app.use('/api/analyze-text', analyzeTextRoute);   // Texte → Mème
 app.use('/api/voice-to-meme', voiceToMemeRoute);  // Audio → Mème
 app.use('/api/remix-image', remixImageRoute);      // Image → Mème
 app.use('/api/generate-meme', generateMemeRoute); // IA → Mème complet (Pollinations AI)
+app.use('/api/face-swap', faceSwapRoute);         // Échange de visage (Hugging Face / Gradio)
 
 // ─── Gestion des erreurs globales ─────────────────────────────────────────────
 
@@ -101,6 +104,7 @@ app.listen(PORT, () => {
   console.log(`   POST http://localhost:${PORT}/api/voice-to-meme`);
   console.log(`   POST http://localhost:${PORT}/api/remix-image`);
   console.log(`   POST http://localhost:${PORT}/api/generate-meme`);
+  console.log(`   POST http://localhost:${PORT}/api/face-swap`);
   console.log('\n⏳ En attente de requêtes...\n');
 });
 

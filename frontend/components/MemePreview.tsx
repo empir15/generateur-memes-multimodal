@@ -28,6 +28,7 @@ interface MemePreviewProps {
   emoji?: string;
   transcription?: string;   // Pour Voice-to-Meme
   onReset: () => void;
+  onFaceSwap?: (imageUri: string) => void;
 }
 
 const colorChoices = [
@@ -47,6 +48,7 @@ export default function MemePreview({
   emoji,
   transcription,
   onReset,
+  onFaceSwap,
 }: MemePreviewProps) {
   const viewShotRef = useRef<React.ElementRef<typeof ViewShot>>(null);
   const [sharing, setSharing] = useState(false);
@@ -255,6 +257,24 @@ export default function MemePreview({
           </LinearGradient>
         </TouchableOpacity>
 
+        {/* Bouton Face Swap (si image présente et callback dispo) */}
+        {imageUri && onFaceSwap ? (
+          <TouchableOpacity
+            style={styles.faceSwapButton}
+            onPress={() => onFaceSwap(imageUri)}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={Colors.gradients.faceswap}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.faceSwapGradient}
+            >
+              <Text style={styles.faceSwapText}>🎭 Échanger le visage</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        ) : null}
+
         {/* Bouton Nouveau */}
         <TouchableOpacity style={styles.resetButton} onPress={onReset} activeOpacity={0.8}>
           <Text style={styles.resetText}>🔄 Nouveau mème</Text>
@@ -328,6 +348,20 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     fontSize: 15,
     fontWeight: '600',
+  },
+  faceSwapButton: {
+    borderRadius: 14,
+    overflow: 'hidden',
+  },
+  faceSwapGradient: {
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  faceSwapText: {
+    color: '#FFF',
+    fontSize: 15,
+    fontWeight: '700',
   },
   editorToggleButton: {
     flexDirection: 'row',

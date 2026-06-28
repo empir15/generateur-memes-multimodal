@@ -16,9 +16,10 @@ import ContextReaderScreen from './screens/ContextReaderScreen';
 import VoiceToMemeScreen from './screens/VoiceToMemeScreen';
 import StatusRemixerScreen from './screens/StatusRemixerScreen';
 import AiGeneratorScreen from './screens/AiGeneratorScreen';
+import FaceSwapScreen from './screens/FaceSwapScreen';
 import { Colors } from './constants/Colors';
 
-type Screen = 'home' | 'text' | 'voice' | 'image' | 'generate';
+type Screen = 'home' | 'text' | 'voice' | 'image' | 'generate' | 'faceswap';
 
 interface ClipboardBanner {
   text: string;
@@ -28,6 +29,7 @@ interface ClipboardBanner {
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [sharedText, setSharedText] = useState<string | undefined>(undefined);
+  const [faceSwapTargetUri, setFaceSwapTargetUri] = useState<string | undefined>(undefined);
 
   // ── Clipboard Share Intent ──────────────────────────────────────────────────
   const [clipboardBanner, setClipboardBanner] = useState<ClipboardBanner>({ text: '', visible: false });
@@ -132,6 +134,7 @@ export default function App() {
   // Réinitialiser sharedText après navigation vers l'écran texte
   const handleNavigate = (screen: Screen) => {
     if (screen !== 'text') setSharedText(undefined);
+    if (screen !== 'faceswap') setFaceSwapTargetUri(undefined);
     setCurrentScreen(screen);
   };
 
@@ -153,9 +156,35 @@ export default function App() {
       case 'voice':
         return <VoiceToMemeScreen onBack={() => setCurrentScreen('home')} />;
       case 'image':
-        return <StatusRemixerScreen onBack={() => setCurrentScreen('home')} />;
+        return (
+          <StatusRemixerScreen
+            onBack={() => setCurrentScreen('home')}
+            onFaceSwap={(uri) => {
+              setFaceSwapTargetUri(uri);
+              setCurrentScreen('faceswap');
+            }}
+          />
+        );
       case 'generate':
-        return <AiGeneratorScreen onBack={() => setCurrentScreen('home')} />;
+        return (
+          <AiGeneratorScreen
+            onBack={() => setCurrentScreen('home')}
+            onFaceSwap={(uri) => {
+              setFaceSwapTargetUri(uri);
+              setCurrentScreen('faceswap');
+            }}
+          />
+        );
+      case 'faceswap':
+        return (
+          <FaceSwapScreen
+            onBack={() => {
+              setFaceSwapTargetUri(undefined);
+              setCurrentScreen('home');
+            }}
+            initialTargetUri={faceSwapTargetUri}
+          />
+        );
       default:
         return <HomeScreen onNavigate={handleNavigate} />;
     }

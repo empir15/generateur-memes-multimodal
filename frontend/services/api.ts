@@ -3,7 +3,17 @@ import Constants from 'expo-constants';
 
 const API_PORT = 3000;
 
+// Renseignez ici l'IP locale de votre ordinateur (récupérée via ipconfig)
+// si vous utilisez Expo Go en mode tunnel/proxy pour forcer la communication directe.
+const OVERRIDE_BACKEND_IP = '10.210.120.44';
+
 function getBackendBaseUrl() {
+  if (OVERRIDE_BACKEND_IP) {
+    const url = `http://${OVERRIDE_BACKEND_IP}:${API_PORT}`;
+    console.log(`[API] URL Backend forcée via OVERRIDE_BACKEND_IP : ${url}`);
+    return url;
+  }
+
   const debuggerHost =
     Constants.expoConfig?.hostUri ||
     Constants.manifest2?.extra?.expoGo?.debuggerHost ||
@@ -192,4 +202,71 @@ export async function generateMeme(subject: string, culturalContext?: string): P
   });
 
   return readJsonResponse<MemeGeneratedData>(response);
+}
+
+/**
+ * Effectue un face swap (échange de visage) en envoyant deux images au backend.
+ * @param sourceUri - URI locale de l'image contenant le visage à copier
+ * @param targetUri - URI locale de l'image cible (le mème à modifier)
+ * @returns Base64 de l'image résultante
+ */
+export async function faceSwap(sourceUri: string, targetUri: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+
+    const srcExt = sourceUri.split('.').pop()?.toLowerCase() || 'jpg';
+    const tgtExt = targetUri.split('.').pop()?.toLowerCase() || 'jpg';
+
+    const mimeMap: Record<string, string> = {
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      png: 'image/png',
+      webp: 'image/webp',
+    };
+
+    // Pour React Native, le typage de FormData attend un objet avec uri, name et type
+    formData.append('source', {
+      uri: sourceUri,
+      name: `source.${srcExt}`,
+      type: mimeMap[srcExt] || 'image/jpeg',
+    } as any);
+
+    formData.append('target', {
+      uri: targetUri,
+      name: `target.${tgtExt}`,
+      type: mimeMap[tgtExt] || 'image/jpeg',
+    } as any);
+
+    console.log(`[API] Uploading via XHR (Face Swap): ${BASE_URL}/api/face-swap`);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${BASE_URL}/api/face-swap`);
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    xhr.onload = () => {
+      let responseJson: any;
+      try {
+        responseJson = JSON.parse(xhr.responseText);
+      } catch (e) {
+        reject(new Error(`Réponse serveur invalide (${xhr.status})`));
+        return;
+      }
+
+      if (xhr.status >= 200 && xhr.status < 300) {
+        if (responseJson && responseJson.success) {
+          resolve(responseJson.data as string); // base64 image
+        } else {
+          reject(new Error(responseJson?.error || `Erreur serveur (${xhr.status})`));
+        }
+      } else {
+        reject(new Error(responseJson?.error || `Erreur serveur (${xhr.status})`));
+      }
+    };
+
+    xhr.onerror = () => {
+      reject(new Error('Erreur réseau lors du face swap.'));
+    };
+
+    xhr.send(formData);
+  });
 }
