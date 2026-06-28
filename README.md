@@ -28,7 +28,8 @@ generateur-memes-multimodal/
 │   │   ├── analyzeText.js    # POST /api/analyze-text   → Texte → Mème
 │   │   ├── voiceToMeme.js    # POST /api/voice-to-meme  → Audio → Mème
 │   │   ├── remixImage.js     # POST /api/remix-image    → Image → Mème
-│   │   └── generateMeme.js   # POST /api/generate-meme  → IA → Mème complet
+│   │   ├── generateMeme.js   # POST /api/generate-meme  → IA → Mème complet
+│   │   └── faceSwap.js       # 🆕 POST /api/face-swap   → Face Swap IA (Gradio)
 │   ├── services/
 │   │   └── geminiService.js  # Logique Gemini AI centralisée
 │   ├── uploads/              # Fichiers temporaires (auto-nettoyés)
@@ -41,7 +42,8 @@ generateur-memes-multimodal/
     │   ├── ContextReaderScreen.tsx
     │   ├── VoiceToMemeScreen.tsx
     │   ├── StatusRemixerScreen.tsx
-    │   └── AiGeneratorScreen.tsx  # 🆕 Génération d'image par IA
+    │   ├── AiGeneratorScreen.tsx  # Génération d'image par IA
+    │   └── FaceSwapScreen.tsx     # 🆕 Échange de visages par IA
     ├── components/
     │   ├── MemeCanvas.tsx
     │   └── MemePreview.tsx
@@ -227,6 +229,9 @@ Disponible sur toutes les fonctionnalités : **France 🇫🇷, Québec 🇨🇦
 ### 7. Personnalisation & Partage 📤
 Après génération : ajustez la couleur et la taille du texte, activez/désactivez les majuscules et le contour, puis partagez via le menu de partage natif Android/iOS.
 
+### 8. Face Swapper 🎭 *(Nouveau)*
+Échangez le visage d'un mème généré ou d'une photo par un visage source de votre choix (selfie pris à la caméra ou importé de la galerie). Le traitement utilise l'IA pour transposer le visage de manière naturelle sur l'image cible. Un raccourci est disponible directement depuis l'aperçu de chaque mème généré.
+
 ---
 
 ## 📡 Endpoints API
@@ -238,6 +243,7 @@ Après génération : ajustez la couleur et la taille du texte, activez/désacti
 | `POST` | `/api/voice-to-meme` | Audio → Mème | `multipart/form-data` (champ `audio`) |
 | `POST` | `/api/remix-image` | Image → Mème | `multipart/form-data` (champ `image`) |
 | `POST` | `/api/generate-meme` | Idée → Image IA + Mème | `{ subject, culturalContext }` |
+| `POST` | `/api/face-swap` | Échange de visages IA | `multipart/form-data` (champs `source` et `target`) |
 
 **Valeurs `culturalContext`** : `france` \| `quebec` \| `belge` \| `afrique` \| `cameroun`
 
